@@ -51,12 +51,12 @@ def do_threshold(imgTmp, low_th, upp_th, do_invert = False):
         imgTmp = cv2.cvtColor(imgTmp, cv2.COLOR_BGR2GRAY)
     
     # do threshold processing:
-    if do_invert == False:
-        (t, imgTmp) = cv2.threshold(src = imgTmp, thresh = low_th, maxval = 255, type = cv2.THRESH_TOZERO)
-        (t, imgTmp) = cv2.threshold(src = imgTmp, thresh = upp_th, maxval = 255, type = cv2.THRESH_BINARY)
-    else:
-        (t, imgTmp) = cv2.threshold(src = imgTmp, thresh = low_th, maxval = 255, type = cv2.THRESH_TOZERO_INV)
-        (t, imgTmp) = cv2.threshold(src = imgTmp, thresh = upp_th, maxval = 255, type = cv2.THRESH_BINARY_INV)
+    (t, imgLowTh) = cv2.threshold(src = imgTmp, thresh = low_th, maxval = 255, type = cv2.THRESH_BINARY)
+    (t, imgUppTh) = cv2.threshold(src = imgTmp, thresh = upp_th, maxval = 255, type = cv2.THRESH_BINARY_INV)
+    imgTmp = cv2.bitwise_and(imgLowTh, imgUppTh)
+    
+    if do_invert == True:
+        imgTmp = cv2.bitwise_not(imgTmp)
         
     return imgTmp
     
